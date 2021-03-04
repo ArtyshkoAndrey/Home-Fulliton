@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -14,12 +15,18 @@ class TestController extends Controller
 //    dd($request->all());
   }
 
-  public function data(Request $request)
+  public function token(Request $request): JsonResponse
   {
+    $data = [
+    "token_type" => "Bearer",
+    "access_token" => "123123",
+    "expires_in" => 36000
+    ];
 
+    return response()->json($data);
   }
 
-  public function google_assistant (Request $request)
+  public function google_assistant (Request $request): JsonResponse
   {
     $data = (object) [];
     $data->requestId = $request->requestId;

@@ -9,5 +9,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('/google_assistant', [TestController::class, 'google_assistant']);
-Route::get('/data', [TestController::class, 'data']);
-Route::get('/token', [TestController::class, 'data']);
+Route::get('/token', [TestController::class, 'token']);
