@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Symfony2PluginSettings">
+    <option name="pathToTranslation" value="resources/lang" />
+    <option name="directoryToWeb" value="resources/views" />
+    <option name="pluginEnabled" value="true" />
+    <option name="profilerCsvPath" value="" />
+    <option name="routingFiles">
+      <list>
+        <routing_file path="routes/web.php" />
+        <routing_file path="routes/api.php" />
+      </list>
+    </option>
+  </component>
+</project>
