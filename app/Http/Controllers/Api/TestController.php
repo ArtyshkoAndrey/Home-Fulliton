@@ -19,7 +19,7 @@ class TestController extends Controller
   {
     $data = [
     "token_type" => "Bearer",
-    "access_token" => config('token.oath2l'),
+    "access_token" => "1836.15267389",
     "expires_in" => 36000
     ];
 
