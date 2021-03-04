@@ -10,13 +10,12 @@ class TestController extends Controller
 {
   public function test(Request $request)
   {
-    return redirect($request->redirect_uri . '?code=AIzaSyAMxpfvkf_0IrBwGxRfL43_OAMHRIZfVhg&state=' . $request->state);
+    return redirect($request->redirect_uri . '?code=6610734270-rqltucr203301ins8740shf53t7106i6.apps.googleusercontent.com&state=' . $request->state);
 //    dd($request->all());
   }
 
   public function data(Request $request)
   {
-    Log::info((string)$request->all());
 
   }
 
