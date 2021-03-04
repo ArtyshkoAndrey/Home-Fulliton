@@ -30,21 +30,21 @@ class TestController extends Controller
   {
     $data = (object) [];
     $data->requestId = $request->requestId;
-    $data->payload = (object) [
+    $data->payload = [
       "agentUserId" => "1836.15267389",
       "devices" => [
-        1 => (object) [
+        [
           "id" => "123",
           "type" => "action.devices.types.OUTLET",
           "traits" => ["action.devices.traits.OnOff"],
-          "name" => (object) [
+          "name" => [
             "defaultNames" => ["My Outlet 1234"],
             "name" => "Night light",
             "nicknames" => ["wall plug"],
           ],
           "willReportState" => false,
           "roomHint" => "TestAndrey",
-          "deviceInfo" => (object) [
+          "deviceInfo" => [
             "manufacturer" => "lights-out-inc",
             "model" => "hs1234",
             "hwVersion" => "3.2",
