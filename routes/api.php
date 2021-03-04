@@ -8,5 +8,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
   return $request->user();
 });
 
-Route::post('/google_assistant', [TestController::class, 'google_assistant']);
+Route::post('/google_assistant', [TestController::class, 'token']);
 Route::post('/token', [TestController::class, 'token']);
