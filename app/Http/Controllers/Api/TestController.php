@@ -29,7 +29,7 @@ class TestController extends Controller
   public function google_assistant (Request $request): JsonResponse
   {
     $data = (object) [];
-    $data->requestId = "ff36a3cc-ec34-11e6-b1a0-64510650abcf";
+    $data->requestId = $request->requestId;
     $data->payload = (object) [
       "agentUserId" => "1836.15267389",
       "devices" => [
