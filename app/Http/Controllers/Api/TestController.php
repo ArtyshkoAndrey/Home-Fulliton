@@ -11,7 +11,7 @@ class TestController extends Controller
 {
   public function test(Request $request)
   {
-    return redirect($request->redirect_uri . '?code=6610734270-rqltucr203301ins8740shf53t7106i6.apps.googleusercontent.com&state=' . $request->state);
+    return redirect($request->redirect_uri . '?code='. config('token.code') . '=' . $request->state);
 //    dd($request->all());
   }
 
@@ -19,7 +19,7 @@ class TestController extends Controller
   {
     $data = [
     "token_type" => "Bearer",
-    "access_token" => "123123",
+    "access_token" => config('token.oath2l'),
     "expires_in" => 36000
     ];
 
