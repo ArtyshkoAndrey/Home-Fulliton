@@ -39,7 +39,7 @@ class TestController extends Controller
     } else if ($request->inputs[0]->intent === 'action.devices.QUERY') {
       $data = $this->query($request);
     } else {
-      $data = []
+      $data = [];
     }
 
     return response()->json($data);
