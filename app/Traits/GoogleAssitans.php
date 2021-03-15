@@ -32,14 +32,18 @@ trait GoogleAssitans
             "swVersion" => "11.4"
           ],
           "attributes" => [
-            "commandOnlyOnOff" => true,
+            "commandOnlyOnOff" => false,
             "queryOnlyOnOff" => false
           ]
         ],
         [
           "id" => "1233",
           "type" => "action.devices.types.SENSOR",
-          "traits" => ["action.devices.traits.TemperatureControl"],
+          "traits" => [
+            "action.devices.traits.TemperatureControl",
+            "action.devices.traits.EnergyStorage",
+            "action.devices.traits.SensorState"
+          ],
           "name" => [
             "defaultNames" => ["Температура на кухне"],
             "name" => "Температура на кухне",
@@ -60,10 +64,34 @@ trait GoogleAssitans
               "temperatureAmbientCelsius" => 23
             ],
             "temperatureUnitForUX" => "C",
-            "commandOnlyTemperatureControl" => true,
+            "commandOnlyTemperatureControl" => false,
             "queryOnlyTemperatureControl" => true,
           ],
         ],
+        [
+          "id" => "1234",
+          "type" => "action.devices.types.CURTAIN",
+          "traits" => [
+            "action.devices.traits.OpenClose"
+          ],
+          "name" => [
+            "name" => "Шторы на кухне"
+          ],
+          "willReportState" => true,
+          "roomHint" => "Кухня",
+          "attributes" => [
+            "openDirection" => [
+              "LEFT",
+              "RIGHT"
+            ]
+          ],
+          "deviceInfo" => [
+            "manufacturer" => "smart-home-inc",
+            "model" => "hs1234",
+            "hwVersion" => "3.2",
+            "swVersion" => "11.4"
+          ]
+        ]
       ]
     ];
 
@@ -95,9 +123,10 @@ trait GoogleAssitans
           "1233" => [
             "status" => "SUCCESS",
             "online" => true,
-            "temperatureRange" => [
-              "temperatureAmbientCelsius" => 32
-            ]
+            // "temperatureRange" => [
+            "temperatureAmbientCelsius" => 10,
+            // "queryOnlyTemperatureControl" => false
+            // ]
           ]
         ]
       ]
