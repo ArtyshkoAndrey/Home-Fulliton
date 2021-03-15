@@ -34,9 +34,11 @@ class TestController extends Controller
       'inputs' => 'required|array',
     ]);
 
-    if ($request->inputs[0]->intent === 'action.devices.SYNC') {
+    $requestArray = $request->all();
+
+    if ($requestArray['inputs'][0]['intent'] === 'action.devices.SYNC') {
       $data = $this->sync($request);
-    } else if ($request->inputs[0]->intent === 'action.devices.QUERY') {
+    } else if ($requestArray['inputs'][0]['intent'] === 'action.devices.QUERY') {
       $data = $this->query($request);
     } else {
       $data = [];
