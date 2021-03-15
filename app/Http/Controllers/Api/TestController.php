@@ -38,12 +38,12 @@ class TestController extends Controller
           "type" => "action.devices.types.OUTLET",
           "traits" => ["action.devices.traits.OnOff"],
           "name" => [
-            "defaultNames" => ["My Outlet 1234"],
-            "name" => "Night light",
-            "nicknames" => ["wall plug"],
+            "defaultNames" => ["Свет на кухне"],
+            "name" => "Свет на кухне",
+            "nicknames" => ["Свет на кухне"],
           ],
           "willReportState" => false,
-          "roomHint" => "TestAndrey",
+          "roomHint" => "Кухня",
           "deviceInfo" => [
             "manufacturer" => "lights-out-inc",
             "model" => "hs1234",
@@ -54,6 +54,31 @@ class TestController extends Controller
             "commandOnlyOnOff" => true,
             "queryOnlyOnOff" => false
           ]
+        ],
+        [
+          "id" => "1233",
+          "type" => "action.devices.types.THERMOSTAT",
+          "traits" => ["action.devices.traits.TemperatureControl"],
+          "name" => "Температура",
+          "willReportState" => true,
+          "roomHint" => "Кухня",
+          "deviceInfo" => [
+            "manufacturer" => "smart-home-inc",
+            "model" => "hs1234",
+            "hwVersion" => "3.2",
+            "swVersion" => "11.4"
+          ],
+          "attributes" => [
+            "temperatureRange" => [
+              "minThresholdCelsius" => 0,
+              "maxThresholdCelsius" => 35,
+              "temperatureAmbientCelsius" => 23.3
+            ],
+            "temperatureStepCelsius" => 1,
+            "temperatureUnitForUX" => "C",
+            "commandOnlyTemperatureControl" => true,
+            "queryOnlyTemperatureControl" => true,
+          ],
         ],
       ]
     ];
