@@ -139,7 +139,7 @@ trait GoogleAssistans
           $module = [];
         }
 
-        $modules[$m['id']] = $module;
+        $modules->{$m['id']} = $module;
       }
 
       return [
