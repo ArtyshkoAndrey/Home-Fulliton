@@ -98,7 +98,48 @@ trait GoogleAssistans
 
     $response = Http::get('http://95.188.80.41:8080/api/google-home/modules');
     $rooms = $response->json()['rooms'];
-    return $rooms;
+    $modules = [];
+    foreach ($rooms as $room) {
+      foreach ($room['modules'] as $m) {
+        $module = [];
+        $module['id'] = $m['id'];
+        $module['type'] = $m['type']['type'];
+        $module['traits'] = [
+          "action.devices.traits.TemperatureControl",
+          "action.devices.traits.EnergyStorage",
+          "action.devices.traits.SensorState"
+        ];
+        $module['name'] = [
+          'defaultNames' => [$m['name']],
+          'name' => $m['name'],
+          'nicknames' => [$m['name']]
+        ];
+        $module['willReportState'] = false;
+        $module['roomHint'] = $room['name'];
+        $module['deviceInfo'] = [
+          "manufacturer" => "smart-home-inc",
+          "model" => "hs1234",
+          "hwVersion" => "3.2",
+          "swVersion" => "11.4"
+        ];
+        $module['attributes'] = [
+          "temperatureRange" => [
+            "minThresholdCelsius" => 0,
+            "maxThresholdCelsius" => 35,
+            "temperatureAmbientCelsius" => 23
+          ],
+          "temperatureUnitForUX" => "C",
+          "commandOnlyTemperatureControl" => false,
+          "queryOnlyTemperatureControl" => true,
+        ];
+
+        array_push($modules, $module);
+      }
+    }
+    $data['payload'] = [
+      "agentUserId" => "1836.15267389",
+      "devices" => $modules
+    ];
 
     return $data;
   }
