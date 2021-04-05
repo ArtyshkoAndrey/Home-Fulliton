@@ -4,7 +4,7 @@ namespace App\Traits;
 
 use Illuminate\Http\Request;
 
-trait GoogleAssitans
+trait GoogleAssistans
 {
 
   public function sync(Request $request): array

@@ -5,11 +5,11 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use App\Traits\GoogleAssitans;
+use App\Traits\GoogleAssistans;
 
 class TestController extends Controller
 {
-  use GoogleAssitans;
+  use GoogleAssistans;
 
   public function test(Request $request)
   {
