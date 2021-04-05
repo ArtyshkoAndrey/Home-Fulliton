@@ -179,7 +179,8 @@ trait GoogleAssistans
       "temperatureRange" => [
         "minThresholdCelsius" => 0,
         "maxThresholdCelsius" => 35,
-        "temperatureAmbientCelsius" => (int) $m['data']
+        "temperatureAmbientCelsius" => (int) $m['data'],
+        "temperatureSetpointCelsius" => (int) $m['data']
       ],
       "temperatureUnitForUX" => "C",
       "commandOnlyTemperatureControl" => false,
