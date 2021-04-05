@@ -96,42 +96,15 @@ trait GoogleAssistans
 //      ]
 //    ];
 
-    $response = Http::get('http://95.188.80.41:8080/api/google-home/modules');
-    $rooms = $response->json()['rooms'];
+    $rooms = $this->getData();
     $modules = [];
     foreach ($rooms as $room) {
       foreach ($room['modules'] as $m) {
-        $module = [];
-        $module['id'] = $m['id'];
-        $module['type'] = $m['type']['type'];
-        $module['traits'] = [
-          "action.devices.traits.TemperatureControl",
-          "action.devices.traits.EnergyStorage",
-          "action.devices.traits.SensorState"
-        ];
-        $module['name'] = [
-          'defaultNames' => [$m['name']],
-          'name' => $m['name'],
-          'nicknames' => [$m['name']]
-        ];
-        $module['willReportState'] = false;
-        $module['roomHint'] = $room['name'];
-        $module['deviceInfo'] = [
-          "manufacturer" => "smart-home-inc",
-          "model" => "hs1234",
-          "hwVersion" => "3.2",
-          "swVersion" => "11.4"
-        ];
-        $module['attributes'] = [
-          "temperatureRange" => [
-            "minThresholdCelsius" => 0,
-            "maxThresholdCelsius" => 35,
-            "temperatureAmbientCelsius" => 23
-          ],
-          "temperatureUnitForUX" => "C",
-          "commandOnlyTemperatureControl" => false,
-          "queryOnlyTemperatureControl" => true,
-        ];
+        if ($m['type'] === 'Температура') {
+          $module = $this->getModuleTemperature($m, $room);
+        } else {
+          $module = [];
+        }
 
         array_push($modules, $module);
       }
@@ -144,39 +117,100 @@ trait GoogleAssistans
     return $data;
   }
 
-  public function query (Request $request)
+  public function query (Request $request): array
   {
     $request->validate([
       'inputs' => 'required|array',
+      'requestId' => 'required'
     ]);
     $data = $request->all();
     $input = $data['inputs'][0];
+    $modules = [];
     if ($input['intent'] === 'action.devices.QUERY') {
-      $deviceId = $input['payload']['devices'][0]['id'];
-      if ($deviceId === '1233') {
-        return $this->getTemperatureControl($data['requestId']);
+
+      $rooms = $this->getData();
+
+      foreach ($input['payload']['devices'] as $device) {
+        $id = $device['id'];
+
+        $m = $this->getModule((int) $id);
+
+        if ($m['type']['name'] === 'Температур') {
+          $module = $this->getTemperatureState($m);
+        } else {
+          $module = [];
+        }
+
+        array_push($modules, $module);
       }
+
+      return [
+        'requestId' => $request->get('requestId'),
+        'payload' => [
+          'devices' => $modules
+        ]
+      ];
     }
     return [];
   }
 
-  private function getTemperatureControl ($requestId): array
+  private function getModuleTemperature ($m, $room): array
+  {
+    $module = [];
+    $module['id'] = $m['id'];
+    $module['type'] = $m['type']['google_type']['name'];
+    $traits = [];
+    foreach ($m['type']['google_traits'] as $trait) {
+      array_push($traits, $trait['name']);
+    }
+    $module['traits'] = $traits;
+    $module['name'] = [
+      'defaultNames' => [$m['name']],
+      'name' => $m['name'],
+      'nicknames' => [$m['name']]
+    ];
+    $module['willReportState'] = false;
+    $module['roomHint'] = $room['name'];
+    $module['deviceInfo'] = [
+      "manufacturer" => "smart-home-inc",
+      "model" => "hs1234",
+      "hwVersion" => "3.2",
+      "swVersion" => "11.4"
+    ];
+    $module['attributes'] = [
+      "temperatureRange" => [
+        "minThresholdCelsius" => 0,
+        "maxThresholdCelsius" => 35,
+        "temperatureAmbientCelsius" => (int) $m['data']
+      ],
+      "temperatureUnitForUX" => "C",
+      "commandOnlyTemperatureControl" => false,
+      "queryOnlyTemperatureControl" => true,
+    ];
+    return $module;
+  }
+
+  private function getTemperatureState (array $m): array
   {
     return [
-      "requestId" => $requestId,
-      "payload" => [
-        "devices" => [
-          "1233" => [
-            "status" => "SUCCESS",
-            "online" => true,
-            // "temperatureRange" => [
-            "temperatureAmbientCelsius" => 10,
-            // "queryOnlyTemperatureControl" => false
-            // ]
-          ]
-        ]
+      $m['id'] => [
+        "status" => "SUCCESS",
+        "online" => true,
+        "temperatureAmbientCelsius" => $m['data'],
       ]
     ];
+  }
+
+  private function getData(): array
+  {
+    $response = Http::get('http://95.188.80.41:8080/api/google-home/modules');
+    return $response->json()['rooms'];
+  }
+
+  private function getModule (int $id): array
+  {
+    $response = Http::get('http://95.188.80.41:8080/api/google-home/modules/' . $id);
+    return $response->json()['module'];
   }
 
 }
