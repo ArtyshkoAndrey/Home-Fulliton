@@ -191,11 +191,9 @@ trait GoogleAssistans
   private function getTemperatureState (array $m): array
   {
     return [
-      $m['id'] => [
-        "status" => "SUCCESS",
-        "online" => true,
-        "temperatureAmbientCelsius" => (int) $m['data'],
-      ]
+      "status" => "SUCCESS",
+      "online" => true,
+      "temperatureAmbientCelsius" => (int) $m['data'],
     ];
   }
 
