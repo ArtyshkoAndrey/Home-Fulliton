@@ -125,7 +125,7 @@ trait GoogleAssistans
     ]);
     $data = $request->all();
     $input = $data['inputs'][0];
-    $modules = [];
+    $modules = (object) [];
     if ($input['intent'] === 'action.devices.QUERY') {
 
       foreach ($input['payload']['devices'] as $device) {
@@ -139,7 +139,7 @@ trait GoogleAssistans
           $module = [];
         }
 
-        array_push($modules, $module);
+        $modules[$m['id']] = $module;
       }
 
       return [
@@ -194,7 +194,7 @@ trait GoogleAssistans
       $m['id'] => [
         "status" => "SUCCESS",
         "online" => true,
-        "temperatureAmbientCelsius" => $m['data'],
+        "temperatureAmbientCelsius" => (int) $m['data'],
       ]
     ];
   }
