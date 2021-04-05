@@ -100,7 +100,7 @@ trait GoogleAssistans
     $modules = [];
     foreach ($rooms as $room) {
       foreach ($room['modules'] as $m) {
-        if ($m['type'] === 'Температура') {
+        if ($m['type']['name'] === 'Температура') {
           $module = $this->getModuleTemperature($m, $room);
         } else {
           $module = [];
