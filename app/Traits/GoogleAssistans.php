@@ -128,14 +128,12 @@ trait GoogleAssistans
     $modules = [];
     if ($input['intent'] === 'action.devices.QUERY') {
 
-      $rooms = $this->getData();
-
       foreach ($input['payload']['devices'] as $device) {
         $id = $device['id'];
 
         $m = $this->getModule((int) $id);
 
-        if ($m['type']['name'] === 'Температур') {
+        if ($m['type']['name'] === 'Температура') {
           $module = $this->getTemperatureState($m);
         } else {
           $module = [];
