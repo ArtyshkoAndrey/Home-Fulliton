@@ -100,8 +100,10 @@ trait GoogleAssistans
     $modules = [];
     foreach ($rooms as $room) {
       foreach ($room['modules'] as $m) {
-        if ($m['type']['name'] === 'Температура') {
+        if ($m['type']['type'] === 'temperature') {
           $module = $this->getModuleTemperature($m, $room);
+        } else if ($m['type']['type'] === 'light') {
+          $module = $this->getModuleLight($m, $room);
         } else {
           $module = [];
         }
@@ -133,7 +135,7 @@ trait GoogleAssistans
 
         $m = $this->getModule((int) $id);
 
-        if ($m['type']['name'] === 'Температура') {
+        if ($m['type']['type'] === 'temperature') {
           $module = $this->getTemperatureState($m);
         } else {
           $module = [];
@@ -150,6 +152,30 @@ trait GoogleAssistans
       ];
     }
     return [];
+  }
+
+  private function getModuleTLight ($m, $room): array
+  {
+    $module = [];
+    $module['id'] = $m['id'];
+    $module['type'] = $m['type']['google_type']['name'];
+    $traits = [];
+    foreach ($m['type']['google_traits'] as $trait) {
+      array_push($traits, $trait['name']);
+    }
+    $module['traits'] = $traits;
+    $module['name'] = [
+      'name' => $m['name']
+    ];
+    $module['willReportState'] = true;
+    $module['roomHint'] = $room['name'];
+    $module['deviceInfo'] = [
+      "manufacturer" => "smart-home-inc",
+      "model" => "hs1234",
+      "hwVersion" => "3.2",
+      "swVersion" => "11.4"
+    ];
+    return $module;
   }
 
   private function getModuleTemperature ($m, $room): array
