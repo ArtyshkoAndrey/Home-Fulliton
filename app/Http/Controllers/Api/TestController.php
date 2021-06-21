@@ -45,7 +45,7 @@ class TestController extends Controller
       $data = $this->query($request);
 
 //      Выполнение команд
-    } if ($requestArray['inputs'][0]['intent'] === 'action.devices.EXECUTE') {
+    } else if ($requestArray['inputs'][0]['intent'] === 'action.devices.EXECUTE') {
       $data = $this->execute($request);
     } else {
       $data = [];
