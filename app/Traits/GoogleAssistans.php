@@ -169,7 +169,7 @@ trait GoogleAssistans
       $devices = [];
       foreach ($command['devices'] as $device) {
         $id = $device['id'];
-        array_push($devices, $command['devices']);
+        array_push($devices, $id);
         $m = $this->getModule((int) $id);
 
         if ($m['type']['type'] === 'light') {
@@ -186,7 +186,7 @@ trait GoogleAssistans
         'status' => $state ? 'SUCCESS' : 'ERROR',
         'states' => [
           'online' => true,
-          $command['execution'][0]
+          $command['execution'][0]['params']
         ]
       ];
       if ($state === false) {
