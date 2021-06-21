@@ -137,8 +137,10 @@ trait GoogleAssistans
 
         if ($m['type']['type'] === 'temperature') {
           $module = $this->getTemperatureState($m);
+        } else if ($m['type']['type'] === 'light') {
+          $module = $this->getLightState($m);
         } else {
-          $module = [];
+          continue;
         }
 
         $modules->{$m['id']} = $module;
@@ -176,6 +178,14 @@ trait GoogleAssistans
       "swVersion" => "11.4"
     ];
     return $module;
+  }
+
+  private function getLightState ($m): array {
+    return [
+      "status" => "SUCCESS",
+      "online" => true,
+      "on" => $m['data'] === '1'
+    ];
   }
 
   private function getModuleTemperature ($m, $room): array
