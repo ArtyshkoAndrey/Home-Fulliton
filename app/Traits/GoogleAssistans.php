@@ -156,6 +156,60 @@ trait GoogleAssistans
     return [];
   }
 
+  public function execute (Request $request): array {
+    $request->validate([
+      'inputs' => 'required|array',
+      'requestId' => 'required'
+    ]);
+    $data = $request->all();
+    $input = $data['inputs'][0];
+    $commands = [];
+    foreach ($input['payload']['commands'] as $command) {
+      $state = true;
+      $devices = [];
+      foreach ($command['devices'] as $device) {
+        $id = $device['id'];
+        array_push($devices, $command['devices']);
+        $m = $this->getModule((int) $id);
+
+        if ($m['type']['type'] === 'light') {
+          $s = $this->getLightExecute($m, $command['execution'][0]['params']);
+          if ($s === false) {
+            $state = false;
+          }
+        } else {
+          $state = false;
+        }
+      }
+      $c = [
+        'ids' => $devices,
+        'status' => $state ? 'SUCCESS' : 'ERROR',
+        'states' => [
+          'online' => true,
+          $command['execution'][0]
+        ]
+      ];
+      if ($state === false) {
+        array_push($c[], ['errorCode' => 'deviceTurnedOff']);
+      }
+      array_push($commands, $c);
+
+    }
+
+
+    return [
+      'requestId' => $request->get('requestId'),
+      'payload' => [
+        'commands' => $commands
+      ]
+    ];
+
+  }
+
+  private function getLightExecute ($m, $data): bool {
+    return $this->setDataModule((int) $m->id, $data['on'] ? '1' : '0');
+  }
+
   private function getModuleLight ($m, $room): array
   {
     $module = [];
@@ -244,6 +298,13 @@ trait GoogleAssistans
   {
     $response = Http::get('http://95.188.80.41:8080/api/google-home/modules/' . $id);
     return $response->json()['module'];
+  }
+
+  private function setDataModule(int $id,string $data): bool {
+    $response = Http::post('http://95.188.80.41:8080/api/google-home/module/' . $id, [
+      'data' => $data
+    ]);
+    return $response->json()['status'];
   }
 
 }

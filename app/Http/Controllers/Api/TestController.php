@@ -36,10 +36,17 @@ class TestController extends Controller
 
     $requestArray = $request->all();
 
+//    Синхронизация устройств
     if ($requestArray['inputs'][0]['intent'] === 'action.devices.SYNC') {
       $data = $this->sync($request);
+
+//     Запрос на данные в системе
     } else if ($requestArray['inputs'][0]['intent'] === 'action.devices.QUERY') {
       $data = $this->query($request);
+
+//      Выполнение команд
+    } if ($requestArray['inputs'][0]['intent'] === 'action.devices.EXECUTE') {
+      $data = $this->execute($request);
     } else {
       $data = [];
     }
