@@ -186,7 +186,7 @@ trait GoogleAssistans
         'status' => $state ? 'SUCCESS' : 'ERROR',
         'states' => [
           'online' => true,
-          (object) $command['execution'][0]['params']
+          array_key_first($command['execution'][0]['params']) => current($command['execution'][0]['params'])
         ]
       ];
       if ($state === false) {
