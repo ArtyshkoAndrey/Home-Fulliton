@@ -154,7 +154,7 @@ trait GoogleAssistans
     return [];
   }
 
-  private function getModuleTLight ($m, $room): array
+  private function getModuleLight ($m, $room): array
   {
     $module = [];
     $module['id'] = $m['id'];
