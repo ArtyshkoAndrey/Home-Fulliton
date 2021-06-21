@@ -105,7 +105,7 @@ trait GoogleAssistans
         } else if ($m['type']['type'] === 'light') {
           $module = $this->getModuleLight($m, $room);
         } else {
-          $module = [];
+          continue;
         }
 
         array_push($modules, $module);
