@@ -173,7 +173,7 @@ trait GoogleAssistans
         $m = $this->getModule((int) $id);
 
         if ($m['type']['type'] === 'light') {
-          $s = $this->getLightExecute($m, $command['execution'][0]['params']);
+          $s = $this->getLightExecute((int) $id, $command['execution'][0]['params']);
           if ($s === false) {
             $state = false;
           }
@@ -206,8 +206,8 @@ trait GoogleAssistans
 
   }
 
-  private function getLightExecute ($m, $data): bool {
-    return $this->setDataModule((int) $m->id, $data['on'] ? '1' : '0');
+  private function getLightExecute (int $id, $data): bool {
+    return $this->setDataModule($id, $data['on'] ? '1' : '0');
   }
 
   private function getModuleLight ($m, $room): array
